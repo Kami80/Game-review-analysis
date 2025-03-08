@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Video Game Data Entry</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            padding: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            color: #333;
+        }
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #ccc;
+            margin: 20px 0;
+        }
+        .input-group-text {
+            background-color: #007bff1b;
+            color: #000000;
+            border: none;
+        }
+        input[type="text"], select {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        button[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body>
+    {% if messages %}
+    <div>
+        {% for message in messages %}
+            <p style="color: green;">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+
+<div class="d-flex justify-content-center gap-4 mt-4">
+    <a href="{% url 'upload_csv' %}" class="btn luxury-btn">
+        📤 Upload CSV
+    </a>
+    
+    <a href="{% url 'export_csv' %}" class="btn luxury-btn">
+        📥 Download CSV
+    </a>
+
+    <a href="{% url 'export_games' %}" class="btn luxury-btn">
+        📥 Download Review
+    </a>
+    <a href="{% url 'game_list' %}" class="btn luxury-btn">
+         Game List
+    </a>
+</div>
+
+
+
+<style>
+    .luxury-btn {
+        background: linear-gradient(135deg, #8e44ad, #3498db);
+        color: white;
+        font-weight: bold;
+        padding: 12px 24px;
+        border-radius: 50px;
+        border: none;
+        box-shadow: 0px 4px 15px rgba(142, 68, 173, 0.4);
+        transition: all 0.3s ease-in-out;
+        text-transform: uppercase;
+    }
+
+    .luxury-btn:hover {
+        background: linear-gradient(135deg, #3498db, #8e44ad);
+        box-shadow: 0px 6px 20px rgba(52, 152, 219, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .luxury-btn:active {
+        transform: translateY(2px);
+        box-shadow: 0px 2px 10px rgba(52, 152, 219, 0.5);
+    }
+</style>
+
+
+
+<form method="post" action="" enctype="multipart/form-data" class="container mt-4 p-4 bg-light rounded shadow">
+    {% csrf_token %}
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Name of the Video Game</label>
+        <input name="Name" type="text" class="form-control" placeholder="Enter game name">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">Year of Release</label>
+        <input name="yor" type="number" class="form-control" placeholder="Enter year">
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">NA Sales (0-42)</label>
+            <input name="NA" type="number" step="0.01" class="form-control" placeholder="Enter NA sales">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">EU Sales (0-30)</label>
+            <input name="EU" type="number" step="0.01" class="form-control" placeholder="Enter EU sales">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label class="form-label fw-bold">JP Sales (0-10)</label>
+            <input name="JP" type="number" step="0.01" class="form-control" placeholder="Enter JP sales">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Critic Score (0-100)</label>
+            <input name="score" type="number" step="0.1" class="form-control" placeholder="Enter critic score">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Critic Count (0-100)</label>
+            <input name="critic_count" type="number" class="form-control" placeholder="Enter critic count">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label fw-bold">User Count (100-10000)</label>
+        <input name="user_count" type="number" class="form-control" placeholder="Enter user count">
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Console Type</label>
+            <select name="console" class="form-select">
+                <option selected disabled>Select Console Type</option>
+                <option value="PC">PC</option>
+                <option value="PS2">PS2</option>
+                <option value="PS3">PS3</option>
+                <option value="X360">Xbox 360</option>
+                <option value="other console">Other Console</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Developer</label>
+            <select name="dev" class="form-select">
+                <option selected disabled>Select Developer</option>
+                <option value="Capcom">Capcom</option>
+                <option value="EA">Electronic Arts</option>
+                <option value="Konami">Konami</option>
+                <option value="Ubisoft">Ubisoft</option>
+                <option value="other dev">Other Developer</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Game Rating</label>
+            <select name="rate" class="form-select">
+                <option selected disabled>Select Game Rating</option>
+                <option value="E">E - Everyone</option>
+                <option value="E10+">E10+ - Everyone 10+</option>
+                <option value="M">M - Mature</option>
+                <option value="T">T - Teen</option>
+                <option value="other rating">Other Rating</option>
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label class="form-label fw-bold">Publisher Company</label>
+            <select name="pub" class="form-select">
+                <option selected disabled>Select Publisher</option>
+                <option value="Activision">Activision</option>
+                <option value="Electronic Arts">Electronic Arts</option>
+                <option value="Konami">Konami Digital Entertainment</option>
+                <option value="Nintendo">Nintendo</option>
+                <option value="Sony">Sony Computer Entertainment</option>
+                <option value="Ubisoft">Ubisoft</option>
+                <option value="other publisher">Other Publisher</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <button type="submit" name="pred_button" value="Save&Next" class="btn btn-primary btn-lg">
+            ✅ Confirm Submission
+        </button>
+    </div>
+</form>
+
+
+
+</body>
+</html>
